@@ -5,6 +5,7 @@ networks:
         driver: overlay
     frontend:
         driver: overlay
+        attachable: true
 
 volumes:
     portainer_data:
