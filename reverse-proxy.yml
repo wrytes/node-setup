@@ -45,6 +45,6 @@ services:
             - acme:/etc/acme.sh
             - /var/run/docker.sock:/var/run/docker.sock:ro
         environment:
-            - DEFAULT_EMAIL=hello@wrytes.io
+            - DEFAULT_EMAIL=${DEFAULT_EMAIL}
         networks:
             - default
