@@ -1,3 +1,5 @@
+set -a; source .env; set +a
+
 docker stack rm reverse-proxy
 docker stack rm portainer
 
