@@ -1,12 +1,8 @@
-networks:
-    frontend:
-        driver: overlay
-
 services:
     app:
         image: node:22
         command:
-            bash -c "git clone --depth=1 https://github.com/wrytes/wrytes-app.git /app
+            bash -c "git clone --depth=1 https://github.com/wrytes/3dotsinc-app.git /app
             && cd /app && yarn install --frozen-lockfile && yarn run build && yarn run start"
         environment:
             - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
@@ -15,3 +11,7 @@ services:
         networks:
             - frontend
         restart: unless-stopped
+
+networks:
+    frontend:
+        driver: overlay

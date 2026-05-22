@@ -1,0 +1,23 @@
+services:
+    app:
+        image: node:22
+        command:
+            bash -c "git clone --depth=1 https://github.com/wrytes/wrytes-app /app
+            && cd /app && yarn install --frozen-lockfile && yarn run build && yarn run start"
+        environment:
+            - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+            - VIRTUAL_HOST=${VIRTUAL_HOST}
+            - VIRTUAL_PORT=${VIRTUAL_PORT}
+            - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+            - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+            - NEXT_PUBLIC_INDEXER_URL=${NEXT_PUBLIC_INDEXER_URL}
+            - NEXT_PUBLIC_DERIBIT_AGENT_URL=${NEXT_PUBLIC_DERIBIT_AGENT_URL}
+            - NEXT_PUBLIC_REOWN_PROJECT_ID=${NEXT_PUBLIC_REOWN_PROJECT_ID}
+            - NEXT_PUBLIC_RPC_URL=${NEXT_PUBLIC_RPC_URL}
+        networks:
+            - frontend
+        restart: unless-stopped
+
+networks:
+    frontend:
+        driver: overlay

@@ -1,0 +1,25 @@
+services:
+    hermes:
+        image: nousresearch/hermes-agent:latest
+        command: gateway run
+        environment:
+            - HERMES_DASHBOARD=1
+            - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+            - VIRTUAL_HOST=${VIRTUAL_HOST}
+            - VIRTUAL_PORT=${VIRTUAL_PORT}
+            - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+            - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
+            - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+            - OPENAI_API_KEY=${OPENAI_API_KEY}
+        volumes:
+            - hermes_data:/opt/data
+        networks:
+            - frontend
+
+volumes:
+    hermes_data:
+
+networks:
+    frontend:
+        driver: overlay
+        attachable: true
