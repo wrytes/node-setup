@@ -26,14 +26,14 @@ services:
         image: portainer/portainer-ce:2.21.5
         command: -H tcp://tasks.agent:9001 --tlsskipverify
         environment:
-            - LETSENCRYPT_HOST=portainer.wrytes.io
-            - VIRTUAL_HOST=portainer.wrytes.io
-            - VIRTUAL_PORT=9000
+            - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+            - VIRTUAL_HOST=${VIRTUAL_HOST}
+            - VIRTUAL_PORT=${VIRTUAL_PORT}
         volumes:
             - portainer_data:/data
         networks:
             - default
-            - reverse-proxy_frontend
+            - frontend
         deploy:
             mode: replicated
             replicas: 1

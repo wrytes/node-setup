@@ -9,6 +9,8 @@ volumes:
 networks:
     default:
         driver: overlay
+    portainer_frontend:
+        external: true
 
 services:
     app:
@@ -30,6 +32,7 @@ services:
               mode: host
         networks:
             - default
+            - portainer_frontend
 
     letsencrypt:
         image: jrcs/letsencrypt-nginx-proxy-companion:2.2
