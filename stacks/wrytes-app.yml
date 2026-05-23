@@ -40,3 +40,4 @@ services:
 networks:
     frontend:
         driver: overlay
+        attachable: true
