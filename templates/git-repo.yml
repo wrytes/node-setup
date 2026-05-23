@@ -8,10 +8,22 @@ services:
         command:
             bash -c "git clone --depth=1 https://github.com/wrytes/wrytes-app.git /app
             && cd /app && yarn install --frozen-lockfile && yarn run build && yarn run start"
+        healthcheck:
+            test: ["CMD-SHELL", "curl -f http://localhost:${VIRTUAL_PORT:-3000} || exit 1"]
+            interval: 15s
+            timeout: 5s
+            retries: 3
+            start_period: 240s
+        deploy:
+            replicas: 1
+            update_config:
+                order: start-first
+                failure_action: rollback
+            restart_policy:
+                condition: on-failure
         environment:
             - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
             - VIRTUAL_HOST=${VIRTUAL_HOST}
             - VIRTUAL_PORT=${VIRTUAL_PORT}
         networks:
             - frontend
-        restart: unless-stopped
