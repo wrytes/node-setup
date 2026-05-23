@@ -1,0 +1,34 @@
+services:
+    app:
+        image: node:22
+        command: bash -c "
+            apt-get update -qq &&
+            apt-get install -yqq tor &&
+            git clone --depth=1 https://github.com/3DotsHub/tor-reverse-proxy.git /app &&
+            cd /app &&
+            yarn install &&
+            yarn run build &&
+            yarn run start:prod"
+        healthcheck:
+            test: ['CMD-SHELL', 'pgrep -x node > /dev/null']
+            interval: 15s
+            timeout: 5s
+            retries: 3
+            start_period: 120s
+        deploy:
+            replicas: 1
+            update_config:
+                order: start-first
+                failure_action: rollback
+            restart_policy:
+                condition: on-failure
+        environment:
+            - PORT=${PORT}
+            - INTERVAL=${INTERVAL}
+            - NAMESPACE=${NAMESPACE}
+        volumes:
+            - profiles:/var/lib/tor/
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+    profiles:
