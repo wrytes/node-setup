@@ -12,23 +12,26 @@ bash init-stack.sh
 
 ## Core stacks
 
-| File | Stack | Description |
-|---|---|---|
-| `core/portainer-agent.yml` | `portainer` | Portainer CE + agent |
-| `core/reverse-proxy.yml` | `reverse-proxy` | Nginx + Let's Encrypt SSL |
-| `core/reverse-proxy-tor.yml` | `reverse-proxy-tor` | Tor reverse proxy |
+| File                         | Stack               | Description               |
+| ---------------------------- | ------------------- | ------------------------- |
+| `core/portainer-agent.yml`   | `portainer`         | Portainer CE + agent      |
+| `core/reverse-proxy.yml`     | `reverse-proxy`     | Nginx + Let's Encrypt SSL |
+| `core/reverse-proxy-tor.yml` | `reverse-proxy-tor` | Tor reverse proxy         |
 
 ## App stacks
 
-| File | Description |
-|---|---|
-| `stacks/wrytes-api.yml` | Wrytes API (Node + Postgres + Redis) |
-| `stacks/wrytes-app.yml` | Wrytes frontend app |
-| `stacks/umami-analytics.yml` | Umami analytics (Node + Postgres) |
-| `stacks/hermes-agent.yml` | Hermes agent |
-| `stacks/3dotsinc-app.yml` | 3dots Inc app |
+Most of the yml deployment files, live within the deploying git repo.
+
+| File                         | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `stacks/wrytes-api.yml`      | Wrytes API (Node + Postgres + Redis) |
+| `stacks/wrytes-app.yml`      | Wrytes frontend app                  |
+| `stacks/umami-analytics.yml` | Umami analytics (Node + Postgres)    |
+| `stacks/hermes-agent.yml`    | Hermes agent                         |
+| `stacks/3dotsinc-app.yml`    | 3dots Inc app                        |
 
 Deploy any stack via CLI:
+
 ```sh
 docker stack deploy -c stacks/<file>.yml <stack-name>
 ```

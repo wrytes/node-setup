@@ -2,7 +2,7 @@ services:
     app:
         image: node:22
         command: bash -c "
-            git clone --depth=1 https://github.com/wrytes/3dotsinc-app.git /app &&
+            git clone --depth=1 https://github.com/wrytes/3dotscapital-app.git /app &&
             cd /app &&
             yarn install --frozen-lockfile &&
             yarn run build &&
