@@ -28,10 +28,15 @@ bash init-stack.sh
 | `stacks/hermes-agent.yml` | Hermes agent |
 | `stacks/3dotsinc-app.yml` | 3dots Inc app |
 
-Deploy any stack via:
+Deploy any stack via CLI:
 ```sh
 docker stack deploy -c stacks/<file>.yml <stack-name>
 ```
+
+Or via Portainer: Stacks → Add stack → paste the yml contents.
+
+> If the stack needs the reverse proxy, connect its `frontend` network to the reverse-proxy container:
+> Portainer → Networks → select the stack's `frontend` network → connect reverse-proxy container.
 
 ## Continuous deployment
 
@@ -43,13 +48,19 @@ docker stack deploy -c stacks/<file>.yml <stack-name>
 # .github/workflows/deploy.yml
 name: Deploy
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [main]
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - run: curl -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}"
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Trigger Portainer redeploy
+              run: |
+                  response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}")
+                  if [ "$response" != "204" ]; then
+                    echo "Portainer webhook failed with status $response"
+                    exit 1
+                  fi
 ```
 
 > Stacks use `order: start-first` with health checks — old container stays up until the new one is healthy.
