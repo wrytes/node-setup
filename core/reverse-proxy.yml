@@ -1,17 +1,3 @@
-version: '3.5'
-
-volumes:
-    nginx-vhost-vol:
-    nginx-share-vol:
-    nginx-certs-vol:
-    acme:
-
-networks:
-    default:
-        driver: overlay
-    portainer_frontend:
-        external: true
-
 services:
     app:
         image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize:alpine
@@ -48,3 +34,15 @@ services:
             - DEFAULT_EMAIL=${DEFAULT_EMAIL}
         networks:
             - default
+
+volumes:
+    nginx-vhost-vol:
+    nginx-share-vol:
+    nginx-certs-vol:
+    acme:
+
+networks:
+    default:
+        driver: overlay
+    portainer_frontend:
+        external: true
