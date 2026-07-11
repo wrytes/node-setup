@@ -1,0 +1,49 @@
+services:
+    ollama:
+        image: ollama/ollama:latest
+        entrypoint: ['bash', '-c']
+        command:
+            - >
+                ollama serve &
+                sleep 5 &&
+                ollama pull ${OLLAMA_MODEL:-qwen3.5:9b} &&
+                wait
+        healthcheck:
+            test: ['CMD', 'ollama', 'list']
+            interval: 15s
+            timeout: 5s
+            retries: 3
+            start_period: 240s
+        deploy:
+            replicas: 1
+            update_config:
+                order: start-first
+                failure_action: rollback
+            restart_policy:
+                condition: on-failure
+            # resources:
+            #     limits:
+            #         memory: ${OLLAMA_MEMORY_LIMIT:-12G}
+            #     reservations:
+            #         memory: ${OLLAMA_MEMORY_RESERVATION:-8G}
+        environment:
+            - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen3.5:9b}
+            - OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0}
+            - OLLAMA_NUM_THREADS=${OLLAMA_NUM_THREADS:-4}
+            - OLLAMA_MAX_LOADED_MODELS=${OLLAMA_MAX_LOADED_MODELS:-1}
+            - OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-5m}
+            # - VIRTUAL_HOST=${VIRTUAL_HOST}
+            # - VIRTUAL_PORT=${VIRTUAL_PORT:-11434}
+            # - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+        volumes:
+            - ollama_data:/root/.ollama
+        networks:
+            - backend
+
+volumes:
+    ollama_data:
+
+networks:
+    backend:
+        driver: overlay
+        attachable: true
